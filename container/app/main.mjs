@@ -1,12 +1,17 @@
-const express = require("express");
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import http from "http";
+import { Server } from "socket.io";
+import { faker } from "@faker-js/faker";
+import { messageManager } from "./message.mjs";
+
 const app = express();
-const path = require("path");
-const http = require("http");
 const server = http.createServer(app);
-const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3001;
-const { faker } = require("@faker-js/faker");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 server.listen(port, () => {
   console.log("Server listening at port %d", port);
@@ -28,7 +33,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (message) => {
-    let rooms = Array.from(socket.rooms);
-    socket.to(rooms).emit("message", "<" + socket.userName + "> " + message);
+    messageManager(message, socket);
   });
 });

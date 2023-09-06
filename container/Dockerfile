@@ -8,4 +8,4 @@ RUN npm install
 COPY ./app ./app
 
 EXPOSE 3001
-CMD ["node", "app/server.js"]
+CMD ["node", "app/main.mjs"]

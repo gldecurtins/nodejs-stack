@@ -57,13 +57,18 @@
       sizes="150x150"
       type="image/png"
     />
+    <!-- https://www.srihash.org/ -->
     <script
       defer
-      src="https://unpkg.com/alpinejs@3.12.3/dist/cdn.min.js"
-      integrity="sha384-mPO6U7t0sNHfI1UIWNf5U6FDzprqWgAMKfOGW86JVGCKoU/7HPdy6DwBaWOsi4eV"
+      src="https://unpkg.com/alpinejs@3.13.0/dist/cdn.min.js"
+      integrity="sha384-EjEsUfA/5AUp6AOIxGF9AopVVVwLwWKoPCOZPsblbSOTPiaTUOkSxL5rKNN5Vvd3"
       crossorigin="anonymous"
     ></script>
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script
+      src="https://cdn.socket.io/4.7.2/socket.io.min.js"
+      integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qt/HFklTJBj/gBOV8G3HcKn4NfQblz"
+      crossorigin="anonymous"
+    ></script>
     <style>
       *,
       ::after,
@@ -476,20 +481,20 @@
           messages: [],
 
           connect() {
-            socket = io();
+            this.socket = io();
 
-            socket.on("connect", () => {
+            this.socket.on("connect", () => {
               this.disabled = false;
               this.placeholder = "Message or h. for help";
             });
 
-            socket.on("disconnect", () => {
+            this.socket.on("disconnect", () => {
               this.socket = null;
               this.disabled = true;
               this.placeholder = "Disconnected. Reload to connect.";
             });
 
-            socket.on("message", (message) => {
+            this.socket.on("message", (message) => {
               this.messages.unshift(message);
               this.messages.splice(1024);
             });
@@ -507,12 +512,12 @@
           send() {
             if (this.input) {
               if (this.input.startsWith("E.") || this.input.startsWith("e.")) {
-                socket.close();
+                this.socket.disconnect();
                 this.input = "";
               } else {
                 this.messages.unshift(this.input);
                 this.messages.splice(1024);
-                socket.emit("message", this.input);
+                this.socket.emit("message", this.input);
                 this.input = "";
               }
             }
