@@ -1,0 +1,7 @@
+version: "3.9"
+
+services:
+  nodejs-stack:
+    image: ghcr.io/gldecurtins/nodejs-stack:latest
+    ports:
+      - "3001:3001"
