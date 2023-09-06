@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/container/app/" # Location of package manifests
+    directory: "/container/" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "docker" # See documentation for possible values
