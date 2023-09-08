@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, "/static")));
 io.on("connection", (socket) => {
   const randomName = faker.person.firstName();
   socket.data.username = randomName;
-  socket.join("1");
+  socket.join(); // join default stack
 
   let rooms = Array.from(socket.rooms);
   io.to(rooms).emit("message", ">> " + socket.data.username + " connected");
