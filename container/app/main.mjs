@@ -21,18 +21,20 @@ app.use(express.static(path.join(__dirname, "/static")));
 
 io.on("connection", (socket) => {
   const randomName = faker.person.firstName();
-  socket.userName = randomName;
+  socket.data.username = randomName;
   socket.join("1");
 
   let rooms = Array.from(socket.rooms);
-  io.to(rooms).emit("message", ">> " + socket.userName + " connected");
+  io.to(rooms).emit("message", ">> " + socket.data.username + " connected");
 
   socket.on("disconnect", () => {
     let rooms = Array.from(socket.rooms);
-    socket.to(rooms).emit("message", ">> " + socket.userName + " disconnected");
+    socket
+      .to(rooms)
+      .emit("message", ">> " + socket.data.username + " disconnected");
   });
 
   socket.on("message", (message) => {
-    messageManager(message, socket);
+    messageManager(message, io, socket);
   });
 });
